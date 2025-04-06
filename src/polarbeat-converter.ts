@@ -166,6 +166,8 @@ function processDirectory(importPath: string, outputPath: string): void {
       return;
     }
 
+    let processedCount = 0;
+
     files.forEach((file) => {
       const filePath = path.join(importPath, file);
       fs.stat(filePath, (err, stats) => {
@@ -174,12 +176,24 @@ function processDirectory(importPath: string, outputPath: string): void {
           return;
         }
         if (stats.isFile()) {
+          console.log(`Processing file: ${file}`);
           processCsv(filePath, outputPath);
+          processedCount++;
         }
       });
     });
+
+    // Log the total number of files processed
+    console.log(`Total files processed: ${processedCount}`);
   });
 }
 
-// Export functions for use in a central composer
-export { processCsv, processDirectory, processLines, writeOutputFile };
+function processPolarFiles(importPath: string, outputPath: string): void {
+  console.log("Processing Polar Beat Data");
+  console.log(`  Import Path: ${importPath}`);
+  console.log(`  Output Path: ${outputPath}`);
+  processDirectory(importPath, outputPath);
+}
+
+// Export main execution function for use in a central composer
+export { processPolarFiles };
