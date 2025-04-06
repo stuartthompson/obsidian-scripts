@@ -4,6 +4,10 @@ node_modules/
 # Build output
 dist/
 
+# Input and output files
+input/
+output/
+
 # TypeScript cache
 *.tsbuildinfo
 

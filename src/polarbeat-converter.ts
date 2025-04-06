@@ -89,50 +89,107 @@ ${obj.hr
 ---
 [[${formattedDate}]]
 #### Heart Rate
-\`\`\`chartsview
-#-----------------#
-#- chart type    -#
-#-----------------#
-type: Line
+\`\`\`dataviewjs
+const hrData = dv.current()['hr-data'];
 
-#-----------------#
-#- chart data    -#
-#-----------------#
-data: |
-  dataviewjs:
-  return dv.current()
-           ['hr-data']
-           .map(entry => ({ time: entry.time, hr: entry.hr }));
+// Extract time and heart rate values
+const labels = hrData.map(entry => entry.time);
+const hrValues = hrData.map(entry => entry.hr);
 
-#-----------------#
-#- chart options -#
-#-----------------#
-options:
-  height: 200
-  xField: "time"
-  yField: "hr"
-  smooth: true
-  xAxis:
-    label:
-      autoHide: true
-      autoRotate: true
-  yAxis:
-    title:
-      text: "Heart Rate (bpm)"
-  annotations:
-    - type: "line"
-      start: ["min", 128]
-      end: ["max", 128]
-      style:
-        stroke: "rgba(88, 10, 10, 1.0)"
-      text:
-        content: "Fat/Fit"
-        offsetY: -2
-        style:
-          textAlign: "left"
-          fontSize: 10
-          fill: "rgba(88, 10, 10, 1.0)"
-          textBaseline: "bottom"
+// Calculate average heart rate
+const totalHr = hrValues.reduce((sum, hr) => sum + hr, 0);
+const avgHr = hrValues.length > 0 ? parseFloat((totalHr / hrValues.length).toFixed(1)) : 0;
+
+// Create an array for the average line
+const avgHrLine = new Array(hrValues.length).fill(avgHr);
+
+const chartData = {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Heart Rate',
+                data: hrValues,
+                borderColor: '#cfcfcf',
+                backgroundColor: '#cfcfcf',
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.5
+            },
+            {
+                label: \`Average Heart Rate (\${avgHr} bpm)\`,
+                data: avgHrLine,
+                borderColor: '#f09595',
+                backgroundColor: '#f09595',
+                borderWidth: 2,
+                pointRadius: 0,
+                borderDash: [5, 5]
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: { 
+	            title: { display: true, text: 'Time' } },
+            y: { 
+	            title: { display: true, text: 'Heart Rate (bpm)' }, 
+	            beginAtZero: false
+	        }
+        },
+        "plugins": {
+	      "annotation": {
+	        "annotations": {
+	          "hrZone0": {
+	            "type": "box",
+	            "yMin": 160,
+	            "yMax": 180,
+	            "backgroundColor": "#cf1b1b22",
+	            "borderWidth": 0
+	          },
+	          "hrZone1": {
+	            "type": "box",
+	            "yMin": 140,
+	            "yMax": 160,
+	            "backgroundColor": "#cf6f1b22",
+	            "borderWidth": 0
+	          },
+	          "hrZone2": {
+	            "type": "box",
+	            "yMin": 120,
+	            "yMax": 140,
+	            "backgroundColor": "#cfc91b22",
+	            "borderWidth": 0
+	          },
+	          "hrZone3": {
+	            "type": "box",
+	            "yMin": 100,
+	            "yMax": 120,
+	            "backgroundColor": "#54cf1b22",
+	            "borderWidth": 0
+	          },
+	          "hrZone4": {
+	            "type": "box",
+	            "yMin": 80,
+	            "yMax": 100,
+	            "backgroundColor": "#1bc3cf22",
+	            "borderWidth": 0
+	          },
+	          "hrZone5": {
+	            "type": "box",
+	            "yMin": 60,
+	            "yMax": 80,
+	            "backgroundColor": "#88888822",
+	            "borderWidth": 0
+	          }
+	        }
+	      }
+	    },
+    }
+};
+
+window.renderChart(chartData, this.container);
 \`\`\`
 `;
 
