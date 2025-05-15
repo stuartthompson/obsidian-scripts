@@ -1,7 +1,9 @@
 import { generateDailySummaries } from "./generate-daily-summaries";
+import { convertPolarbeat } from "./polarbeat-converter";
 
 const recipes: { [key: string]: Function } = {
     "generate-daily-summaries": generateDailySummaries,
+    "convert-polarbeat": convertPolarbeat,
 };
 
 const recipeName = process.argv[2];
