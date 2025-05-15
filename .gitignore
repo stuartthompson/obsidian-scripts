@@ -6,7 +6,7 @@ npm-debug.log*
 dist/
 *.tsbuildinfo
 
-# Input and output directories for converstion and generation
+# Input and output directories for conversion and generation
 input/
 output/
 
