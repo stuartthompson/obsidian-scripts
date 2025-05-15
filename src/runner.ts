@@ -1,11 +1,13 @@
 import { generateDailySummaries } from "./generate-daily-summaries";
 import { convertPolarbeat } from "./polarbeat-converter";
 import { convertPremierLeagueFixtures } from "./premier-league-fixture-converter";
+import { generateMonthlySummaries } from "./generate-monthly-summaries";
 
 const recipes: { [key: string]: Function } = {
     "generate-daily-summaries": generateDailySummaries,
     "convert-polarbeat": convertPolarbeat,
     "convert-premier-league": convertPremierLeagueFixtures,
+    "generate-monthly-summaries": generateMonthlySummaries,
 };
 
 const recipeName = process.argv[2];
