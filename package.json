@@ -8,7 +8,8 @@
     "clean": "rimraf dist",
     "run:generate-daily-summaries": "npm run build && node dist/runner.js generate-daily-summaries",
     "run:generate-weekly-summaries": "npm run build && node dist/runner.js generate-weekly-summaries",
-    "run:convert-polarbeat": "npm run build && node dist/runner.js convert-polarbeat"
+    "run:convert-polarbeat": "npm run build && node dist/runner.js convert-polarbeat",
+    "run:convert-premier-league": "npm run build && node dist/runner.js convert-premier-league"
   },
   "devDependencies": {
     "@types/node": "^22.13.17",
