@@ -1,0 +1,17 @@
+{
+  "name": "typescript-project",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "clean": "rimraf dist",
+    "run:generate-daily-summaries": "npm run build && node dist/runner.js generate-daily-summaries",
+    "run:generate-weekly-summaries": "npm run build && node dist/runner.js generate-weekly-summaries"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.17",
+    "rimraf": "^5.0.10",
+    "typescript": "^4.0.0"
+  }
+}
