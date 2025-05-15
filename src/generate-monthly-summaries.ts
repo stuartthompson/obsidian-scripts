@@ -8,8 +8,8 @@ declare global {
     }
 }
 
-export function generateMonthlySummaries(year: number) {
-    const outputDir = join(__dirname, `../summaries/${year}`);
+export function generateMonthlySummaries(year: number, outputDir?: string) {
+    outputDir = outputDir || join(__dirname, `../summaries/${year}`);
     if (!existsSync(outputDir)) {
         mkdirSync(outputDir, { recursive: true });
     }

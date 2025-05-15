@@ -12,12 +12,29 @@ const recipes: { [key: string]: Function } = {
 
 const recipeName = process.argv[2];
 const year = parseInt(process.argv[3]);
-// Change default outputDir for daily summaries
-const outputDir =
-    process.argv[4] ||
-    (recipeName === "generate-daily-summaries"
-        ? "./output/Daily"
-        : "./output");
+const outputDir = getOutputDir(recipeName);
+
+/**
+ * Determines the output directory based on the recipe name.
+ * @param recipeName The name of the recipe.
+ * @returns The output directory path.
+ */
+function getOutputDir(recipeName: string): string {
+    switch (recipeName) {
+    case "generate-daily-summaries":
+        return "./output/daily";
+    case "generate-weekly-summaries":
+        return "./output/weekly";
+    case "generate-monthly-summaries":
+        return "./output/monthly";
+    case "convert-polarbeat":
+        return "./output/polarbeat";
+    case "convert-premier-league":
+        return "./output/premier-league";
+    default:
+        return "./output";
+    }
+}
 
 if (!recipes[recipeName]) {
     console.error(`❌ Recipe "${recipeName}" not found.`);
