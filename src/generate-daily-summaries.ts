@@ -81,17 +81,18 @@ date: {{DATE}}
 ## Activities
 \`\`\`dataviewjs
 // Get activities for this day
+const src = dv.page("Personal/Journal/Daily/{{YEAR}}/{{DATE}}");
 const pages = dv.pages('"Personal/Journal/Activities"')
     .where(p =>
         moment(new Date(p.date)).format("YYYY-MM-DD") ===
-        moment(new Date(dv.current().date)).format("YYYY-MM-DD")
+        moment(new Date(src.date)).format("YYYY-MM-DD")
     );
 
 // Display the table if there are results
 if (pages.length > 0) {
     // Transform data
     const data = pages.map(p => {
-	    // Determine activity
+        // Determine activity
         let activity = "?";
         if (p.type === "gaming") {
             activity = p.game;
@@ -109,7 +110,7 @@ if (pages.length > 0) {
         // Calculate end time if available
         if (p['start-time'] && p.duration) {
             const startMoment = 
-	            moment(\`1970-01-01T\${p['start-time']}\`, 'YYYY-MM-DDTHH:mm');
+                moment(\`1970-01-01T\${p['start-time']}\`, 'YYYY-MM-DDTHH:mm');
             const endMoment = startMoment.clone().add(moment.duration(p.duration));
             ended = endMoment.format("HH:mm");
         }
@@ -128,15 +129,15 @@ if (pages.length > 0) {
 // Those without start times go at the end
 const sortedData = Array.from(data)
     .sort((a,b) => {
-	    if (a.started === '?') {
-		    return 0;
-	    }
-	    if (b.started === '?') {
-		    return -1;
-	    }
-	    if (a.started < b.started) {
-		    return -1;
-	    }
+        if (a.started === '?') {
+            return 0;
+        }
+        if (b.started === '?') {
+            return -1;
+        }
+        if (a.started < b.started) {
+            return -1;
+        }
     });
 
     // Render the table
@@ -152,6 +153,7 @@ const sortedData = Array.from(data)
 ## Exercise
 ### Calisthenics
 \`\`\`dataviewjs
+const src = dv.page("Personal/Journal/Daily/{{YEAR}}/{{DATE}}");
 // List the exercises we expect to parse
 const exerciseFields = ["chinups", "pullups", "pushups", "situps", "squats", "stepups"];
 const datasets = [];
@@ -163,8 +165,8 @@ const exerciseColors = {
     pushups:  "#cfc91b",
     //unused: "#54cf1b",
     situps: "#1bc3cf",
-	squats: "#1b72cf",
-	stepups: "#7b1bcf" 
+    squats: "#1b72cf",
+    stepups: "#7b1bcf" 
 };
 
 // Define the chart day start and end times
@@ -173,7 +175,7 @@ const dayEnd = "2022-01-01T23:00:00";
 
 // Loop over each exercise field in the inline data
 exerciseFields.forEach(ex => {
-    let value = dv.current()[ex];
+    let value = src[ex];
     let dataPoints = [];
     if (value) {
         // Split in case there are multiple values
@@ -272,7 +274,7 @@ window.renderChart(chartData, this.container);
 \`\`\`
 ### Taekwondo
 \`\`\`dataviewjs
-// List the exercises we expect to parse
+const src = dv.page("Personal/Journal/Daily/{{YEAR}}/{{DATE}}");
 const exerciseFields = ["tkd-bouncing", "tkd-flexibility", "tkd-forms", "tkd-rolls", "tkd-sparring"];
 const datasets = [];
 
@@ -283,8 +285,8 @@ const exerciseColors = {
     "tkd-forms":  "#cfc91b",
     //unused: "#54cf1b",
     //unused: "#1bc3cf",
-	"tkd-rolls": "#1b72cf",
-	"tkd-sparring": "#7b1bcf" 
+    "tkd-rolls": "#1b72cf",
+    "tkd-sparring": "#7b1bcf" 
 };
 
 // Define the chart day start and end times
@@ -293,7 +295,7 @@ const dayEnd = "2022-01-01T23:00:00";
 
 // Loop over each exercise field in the inline data
 exerciseFields.forEach(ex => {
-    let value = dv.current()[ex];
+    let value = src[ex];
     let dataPoints = [];
     if (value) {
         // Split in case there are multiple values
@@ -392,7 +394,7 @@ window.renderChart(chartData, this.container);
 \`\`\`
 ### Kicking
 \`\`\`dataviewjs
-// List the exercises we expect to parse
+const src = dv.page("Personal/Journal/Daily/{{YEAR}}/{{DATE}}");
 const exerciseFields = ["round-houses", "side-kicks", "hook-kicks", "back-kicks", "front-kicks", "crescent-kicks", "axe-kicks"];
 const datasets = [];
 
@@ -402,9 +404,9 @@ const exerciseColors = {
     "side-kicks": "#cf6f1b",
     "hook-kicks":  "#cfc91b",
     "back-kicks": "#54cf1b",
-	"front-kicks": "#1bc3cf",
-	"crescent-kicks": "#1b72cf",
-	"axe-kicks": "#7b1bcf" 
+    "front-kicks": "#1bc3cf",
+    "crescent-kicks": "#1b72cf",
+    "axe-kicks": "#7b1bcf" 
 };
 
 // Define the chart day start and end times
@@ -413,7 +415,7 @@ const dayEnd = "2022-01-01T23:00:00";
 
 // Loop over each exercise field in the inline data
 exerciseFields.forEach(ex => {
-    let value = dv.current()[ex];
+    let value = src[ex];
     let dataPoints = [];
     if (value) {
         // Split in case there are multiple values
@@ -514,6 +516,7 @@ window.renderChart(chartData, this.container);
 ## Nutrition
 ### Daily Nutrients
 \`\`\`dataviewjs
+const src = dv.page("Personal/Journal/Daily/{{YEAR}}/{{DATE}}");
 // Define the meal fields to process
 const meals = ["breakfast", "lunch", "dinner", "snacks"];
 // Prepare an array to hold { food, qty } objects.
@@ -524,7 +527,7 @@ const itemRegex = /(\\d+)\\s*x\\s*\\[\\[([^\\]\\|]+)(?:\\|[^\\]]+)?\\]\\]/gi;
 
 // Loop through each meal field from the current page
 for (let meal of meals) {
-  let mealField = dv.current()[meal];
+  let mealField = src[meal];
   if (mealField) {
     let match;
     // Reset regex index in case it is used multiple times
@@ -554,15 +557,15 @@ let ndv = dv.page("Nutrition Daily Values");
 
 // List of nutrients to display
 let nutrientKeys = [
-	'calories',
-	'saturated-fat',
-	'sodium',
-	'dietary-fiber',
-	'sugars',
-	'protein',
-	'calcium',
-	'iron',
-	'potassium'
+    'calories',
+    'saturated-fat',
+    'sodium',
+    'dietary-fiber',
+    'sugars',
+    'protein',
+    'calcium',
+    'iron',
+    'potassium'
 ];
 
 // Initialize an object to hold the totals for each nutrient.
@@ -613,6 +616,7 @@ dv.table(
 \`\`\`
 #### Nutrition Information by Deficit or Surplus
 \`\`\`dataviewjs
+const src = dv.page("Personal/Journal/Daily/{{YEAR}}/{{DATE}}");
 // Define color codes
 const colors = {
   recommended: "#1b72cf", // blue   (recommended)
@@ -627,17 +631,17 @@ const meals = ["breakfast", "lunch", "dinner", "snacks"];
 
 // List of nutrients to display
 let nutrientsToMinimize = [
-	'calories',
-	'saturated-fat',
-	'sodium',
-	'added-sugars'
+    'calories',
+    'saturated-fat',
+    'sodium',
+    'added-sugars'
 ];
 let nutrientsToMaximize = [
-	'dietary-fiber',
-	'protein',
-	'calcium',
-	'iron',
-	'potassium'
+    'dietary-fiber',
+    'protein',
+    'calcium',
+    'iron',
+    'potassium'
 ];
 // Combine both groups into one array of nutrient keys.
 let nutrientKeys = nutrientsToMinimize.concat(nutrientsToMaximize);
@@ -650,7 +654,7 @@ const itemRegex = /(\\d+)\\s*x\\s*\\[\\[([^\\]\\|]+)(?:\\|[^\\]]+)?\\]\\]/gi;
 
 // Loop through each meal field from the current page
 for (let meal of meals) {
-  let mealField = dv.current()[meal];
+  let mealField = src[meal];
   if (mealField) {
     let match;
     // Reset regex index in case it is used multiple times
@@ -877,8 +881,10 @@ window.renderChart(chartData, this.container);
             // Log: Generating file for this date
             console.log(`[log] Generating daily note for ${isoDate}`);
 
-            // Replace the date placeholder in the template
-            const content: string = template.replace("{{DATE}}", isoDate);
+            // Replace placeholders in the template
+            let content = template
+                .replace(/{{DATE}}/g, isoDate)
+                .replace(/{{YEAR}}/g, String(year));
 
             // Use new filename format: <YYYY-MM-DD>-Summary.md
             const filePath: string = path.join(outputDir, `${title}-Summary.md`);
