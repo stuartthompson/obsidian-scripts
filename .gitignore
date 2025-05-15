@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Output directory for generated notes
+output/
+
+# IDE/editor settings
+.vscode/
