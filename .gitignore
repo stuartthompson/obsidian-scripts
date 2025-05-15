@@ -6,7 +6,8 @@ npm-debug.log*
 dist/
 *.tsbuildinfo
 
-# Output directory for generated notes
+# Input and output directories for converstion and generation
+input/
 output/
 
 # IDE/editor settings
